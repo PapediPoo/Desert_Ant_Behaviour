@@ -1,0 +1,7 @@
+Classes: Camel case starting with capital letter
+Methods: Camel case starting with lowercase letter
+Fields: all lowercase. Words separated by "_"
+Files: Camel case starting with capital letter
+
+* Class description before constructor (__init__)
+* Method description if needed
