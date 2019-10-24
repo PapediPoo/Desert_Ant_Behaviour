@@ -1,5 +1,5 @@
 from enum import Enum
-from Simulation import SimulationParameters
+from Simulation.SimulationData import SimulationParameters
 import numpy as np
 
 
