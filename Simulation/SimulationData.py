@@ -1,25 +1,6 @@
 import numpy as np
 
 
-class SimulationParameters:
-	'''
-	* This class describes the parameters for the simulation.
-	* It will be read by the Simulation class and read+written by the GUI.
-	'''
-	def __init__(self):
-		pass
-
-	# TODO: Use static fields (?)
-	move_speed = 1
-	turn_dev = np.pi/8
-	vision_radius = 20
-
-	dist_error = 0.1
-	angle_error = 0.1
-
-	ant_count = 5
-
-
 class SimulationResults:
 	'''
 	* Holds information about the paths created by the ant simulation
