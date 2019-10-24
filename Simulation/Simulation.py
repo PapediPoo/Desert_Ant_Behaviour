@@ -1,5 +1,6 @@
 import Ant
-from Simulation.SimulationData import SimulationParameters, SimulationResults
+import Simulation.SimulationParameters as PM
+from Simulation.SimulationData import SimulationResults
 
 
 class Simulation:
