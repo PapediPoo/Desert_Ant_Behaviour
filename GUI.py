@@ -24,9 +24,9 @@ if __name__ == '__main__':
 		# Read control panel values
 		SimulationParameters.ant_count = count_scale.get()
 		SimulationParameters.move_speed = speed_scale.get() / 100
-		SimulationParameters.turn_dev = angle_scale.get() / 180 * np.pi
+		SimulationParameters.move_angle = angle_scale.get() / 180 * np.pi
 		SimulationParameters.vision_radius = vision_scale.get()
-		SimulationParameters.dist_error = speed_error_scale.get()
+		SimulationParameters.speed_error = speed_error_scale.get()
 		SimulationParameters.angle_error = angle_error_scale.get()
 
 		plt.clf()
@@ -61,10 +61,10 @@ if __name__ == '__main__':
 	count_scale = tkinter.Scale(control_panel, from_=1, to=250, orient=tkinter.HORIZONTAL, label="Ant count")
 	count_scale.pack(side=tkinter.TOP)
 
-	speed_scale = tkinter.Scale(control_panel, from_=25, to=400, orient=tkinter.HORIZONTAL, label="Ant speed")
+	speed_scale = tkinter.Scale(control_panel, from_=25, to=400, orient=tkinter.HORIZONTAL, label="Ant move speed")
 	speed_scale.pack(side=tkinter.TOP)
 
-	angle_scale = tkinter.Scale(control_panel, from_=1, to=90, orient=tkinter.HORIZONTAL, label="Ant angle")
+	angle_scale = tkinter.Scale(control_panel, from_=1, to=90, orient=tkinter.HORIZONTAL, label="Ant move angle")
 	angle_scale.pack(side=tkinter.TOP)
 
 	vision_scale = tkinter.Scale(control_panel, from_=1, to=100, orient=tkinter.HORIZONTAL, label="Ant vision radius")

@@ -44,7 +44,7 @@ class Ant:
 	def search(self):
 		# TODO: Implement Simulation boundaries
 		# Calculate new position&direction as biased random walk
-		self.dir = np.random.normal(self.dir, PM.turn_dev)
+		self.dir = np.random.normal(self.dir, PM.move_angle)
 		self.x_pos += np.cos(self.dir) * PM.move_speed
 		self.y_pos += np.sin(self.dir) * PM.move_speed
 
