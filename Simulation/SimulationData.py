@@ -12,20 +12,18 @@ class SimulationResults:
 		self.paths = []
 
 	def addPoint(self, path_index, x_pos, y_pos):
-		# Adds a new point to the specified path
-		real_index = path_index * 2
-		self.paths[real_index].append(x_pos)
-		self.paths[real_index+1].append(y_pos)
+		# Adds a new point to the specified path		
+		self.paths[path_index][0].append(x_pos)		
+		self.paths[path_index][1].append(y_pos)		
 
 	def addPath(self):
 		# Creates 2 list for x and y positions
-		self.paths.append([])
-		self.paths.append([])
+		self.paths.append(([], []))
+		self.paths.append(([], []))
 
 	def getPath(self, path_index):
-		# Returns single path as tuple
-		real_index = path_index * 2
-		return self.paths[real_index], self.paths[real_index+1]
+		# Returns single path as tuple		
+		return self.paths[path_index]
 
 	def getAll(self):
 		return self.paths

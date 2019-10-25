@@ -32,9 +32,9 @@ if __name__ == '__main__':
 		plt.clf()
 		s = Simulation(SimulationParameters.ant_count, None)
 		s.setSteps(250)
-		result = s.simulate().getAll()
-		for i in range(0, (int)(len(result) / 2)):
-			plt.plot(result[i], result[i + 1])
+		paths = s.simulate().getAll()
+		for path in paths:			
+			plt.plot(path[0], path[1])
 
 		canvas.figure = plt.gcf()
 		canvas.draw()
