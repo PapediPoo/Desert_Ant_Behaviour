@@ -3,6 +3,8 @@ import tkinter
 import numpy as np
 from Simulation.Simulation import Simulation
 import Simulation.SimulationParameters as SimulationParameters
+
+from UI.Drawer import drawEnvironment, drawPaths
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure import Figure
@@ -20,7 +22,7 @@ if __name__ == '__main__':
 		root.quit()
 		root.destroy()
 
-	def _simulate():
+	def _simulate(args=None):
 		# Read control panel values
 		SimulationParameters.ant_count = count_scale.get()
 		SimulationParameters.move_speed = speed_scale.get() / 100
@@ -29,24 +31,24 @@ if __name__ == '__main__':
 		SimulationParameters.speed_error = speed_error_scale.get()
 		SimulationParameters.angle_error = angle_error_scale.get()
 
-		plt.clf()
-		s = Simulation(SimulationParameters.ant_count, None)
+		plt.clf()  # clears previous graph
+		plt.axis("off")
+		plt.tight_layout(0)
+		s = Simulation(None)  # TODO: Pass environment
 		s.setSteps(250)
 		paths = s.simulate().getAll()
-		for path in paths:			
-			plt.plot(path[0], path[1])
 
-		canvas.figure = plt.gcf()
+		drawPaths(canvas, paths)
+		drawEnvironment(canvas, None)  # TODO: Pass environment
 		canvas.draw()
 
 	# Setup graph canvas and toolbar
 	canvas = FigureCanvasTkAgg(plt.gcf(), graph_panel)
-	canvas.draw()
 
 	toolbar = NavigationToolbar2Tk(canvas, graph_panel)
 	toolbar.update()
 
-	canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+	canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=True)
 
 	# Position control panel
 	control_panel.grid(row=0, column=0, sticky="ns")
@@ -59,28 +61,36 @@ if __name__ == '__main__':
 
 	# Setup control panel
 	count_scale = tkinter.Scale(control_panel, from_=1, to=250, orient=tkinter.HORIZONTAL, label="Ant count")
+	count_scale.set(10)
 	count_scale.pack(side=tkinter.TOP)
 
 	speed_scale = tkinter.Scale(control_panel, from_=25, to=400, orient=tkinter.HORIZONTAL, label="Ant move speed")
+	speed_scale.set(100)
 	speed_scale.pack(side=tkinter.TOP)
 
 	angle_scale = tkinter.Scale(control_panel, from_=1, to=90, orient=tkinter.HORIZONTAL, label="Ant move angle")
+	angle_scale.set(15)
 	angle_scale.pack(side=tkinter.TOP)
 
 	vision_scale = tkinter.Scale(control_panel, from_=1, to=100, orient=tkinter.HORIZONTAL, label="Ant vision radius")
+	vision_scale.set(15)
 	vision_scale.pack(side=tkinter.TOP)
 
 	speed_error_scale = tkinter.Scale(control_panel, from_=0, to=100, orient=tkinter.HORIZONTAL, label="Ant speed error")
+	speed_error_scale.set(25)
 	speed_error_scale.pack(side=tkinter.TOP)
 
 	angle_error_scale = tkinter.Scale(control_panel, from_=0, to=100, orient=tkinter.HORIZONTAL, label="Ant angle error")
+	angle_error_scale.set(25)
 	angle_error_scale.pack(side=tkinter.TOP)
 
 	simulate_button = tkinter.Button(control_panel, text="Simulate", command=_simulate)
 	simulate_button.pack(side=tkinter.TOP)
+	root.bind("s", _simulate)
 
 	quit_button = tkinter.Button(control_panel, text="Quit", command=_quit)
 	quit_button.pack(side=tkinter.BOTTOM)
 	root.protocol("WM_DELETE_WINDOW", _quit)
 
+	_simulate()
 	tkinter.mainloop()

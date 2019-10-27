@@ -7,9 +7,9 @@ class Simulation:
 	'''
 	* Holds all information about simulation, runs simulation and returns results.
 	'''
-	def __init__(self, ant_count, environment):
+	def __init__(self, environment):
 		self.ants = []
-		self.setAntCount(ant_count)
+		self.setAntCount(PM.ant_count)
 		self.environment = environment
 
 		# TODO: Replace with success condition
@@ -18,6 +18,7 @@ class Simulation:
 	def simulate(self):
 		# TODO: should the SimulationResults object be reused?
 		result = SimulationResults()
+		self.setAntCount(PM.ant_count)
 		for i, ant in enumerate(self.ants):
 			result.addPath()
 			result.addPoint(i, *ant.getPosition())

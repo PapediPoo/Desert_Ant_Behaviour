@@ -1,5 +1,6 @@
-import EnvironmentParameters as EP
+from Environment import EnvironmentParameters as EP
 from random import randint, random
+
 
 class Environment:
 	"""

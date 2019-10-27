@@ -1,5 +1,6 @@
 from enum import Enum
-import Simulation.SimulationParameters as PM
+import Simulation.SimulationParameters as SP
+import Environment.EnvironmentParameters as EP
 import numpy as np
 
 
@@ -44,9 +45,12 @@ class Ant:
 	def search(self):
 		# TODO: Implement Simulation boundaries
 		# Calculate new position&direction as biased random walk
-		self.dir = np.random.normal(self.dir, PM.move_angle)
-		self.x_pos += np.cos(self.dir) * PM.move_speed
-		self.y_pos += np.sin(self.dir) * PM.move_speed
+		self.dir = np.random.normal(self.dir, SP.move_angle)
+		self.x_pos += np.cos(self.dir) * SP.move_speed
+		self.y_pos += np.sin(self.dir) * SP.move_speed
+
+		self.x_pos = np.clip(self.x_pos, -EP.playround_with/2, EP.playround_with/2)
+		self.y_pos = np.clip(self.y_pos, -EP.playround_height/2, EP.playround_height/2)
 
 	def toNest(self):
 		# TODO: Implement return-to-nest behaviour
