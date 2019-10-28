@@ -1,3 +1,4 @@
+import time
 import Ant
 import Simulation.SimulationParameters as PM
 from Simulation.SimulationData import SimulationResults
@@ -17,6 +18,7 @@ class Simulation:
 
 	def simulate(self):
 		# TODO: should the SimulationResults object be reused?
+		start = time.time()
 		result = SimulationResults()
 		self.setAntCount(PM.ant_count)
 		for i, ant in enumerate(self.ants):
@@ -28,7 +30,7 @@ class Simulation:
 			for i, ant in enumerate(self.ants):
 				ant.step()
 				result.addPoint(i, *ant.getPosition())
-
+		print("Simulation time:", time.time()-start)
 		return result
 
 	def setAntCount(self, ant_count):

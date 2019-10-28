@@ -24,11 +24,13 @@ class Ant:
 	* on the path from the nest to the food. If it sees multiple landmarks, it will take the sum of the
 	* directional vectors.
 	'''
-	def __init__(self):
+	def __init__(self, environment=None):
 		self.x_pos = 0  # Assume that the nest is at location (0,0)
 		self.y_pos = 0
 		self.dir = np.random.random_sample() * np.pi * 2  # Random starting rotation between 0 and 2Pi
 		self.behav = AntBehaviour.search
+
+		self.env = environment
 		self.food_found = False
 
 	def step(self):
@@ -40,6 +42,9 @@ class Ant:
 		elif self.behav is AntBehaviour.to_food:
 			self.toFood()
 
+		if self.env is not None and self.env.is_near_food(self.x_pos, self.y_pos):
+			self.food_found = True
+
 		# TODO: Implement behaviour transitions
 
 	def search(self):
@@ -49,8 +54,11 @@ class Ant:
 		self.x_pos += np.cos(self.dir) * SP.move_speed
 		self.y_pos += np.sin(self.dir) * SP.move_speed
 
-		self.x_pos = np.clip(self.x_pos, -EP.playround_with/2, EP.playround_with/2)
-		self.y_pos = np.clip(self.y_pos, -EP.playround_height/2, EP.playround_height/2)
+		h2 = EP.playround_height/2
+		w2 = EP.playround_with/2
+		# np.clip would make the simulation ~5x slower
+		self.x_pos = Ant.__clip(self.x_pos, -w2, w2)
+		self.y_pos = Ant.__clip(self.y_pos, -h2, h2)
 
 	def toNest(self):
 		# TODO: Implement return-to-nest behaviour
@@ -62,3 +70,12 @@ class Ant:
 
 	def getPosition(self):
 		return self.x_pos, self.y_pos
+
+	@staticmethod
+	def __clip(val, min_val, max_val):
+		if min_val < val < max_val:
+			return val
+		elif val < min_val:
+			return min_val
+		else:
+			return max_val

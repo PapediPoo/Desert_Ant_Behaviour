@@ -14,8 +14,12 @@ class Environment:
 	"""	
 
 	# TODO: Now, landmarks and the nest get treated in the same way, but food is not. Maybe create classes for them anyway? (What about the algorithm?)
+	__id = 0
 
 	def __init__(self):
+		self.id = Environment.__id
+		Environment.__id += 1
+
 		self.nest_x = 0
 		self.nest_y = 0
 
