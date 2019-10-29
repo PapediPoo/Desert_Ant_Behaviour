@@ -1,9 +1,11 @@
 from enum import Enum
 
+
 class LandmarkTypes(Enum):
     LANDMARK = 0
     FOOD = 1
     NEST = 2
+
 
 class Landmark():
     """
@@ -29,12 +31,26 @@ class Landmark():
     def get_type(self):
         return LandmarkTypes.LANDMARK
 
+    @property
+    def id(self):
+        return self.id
+
+    @property
+    def x(self):
+        return self.x
+
+    @property
+    def y(self):
+        return self.y
+
+
 class FOOD(Landmark):
     def __init__(self, x, y):
         Landmark.__init__(self, x, y)
 
     def get_type(self):
         return LandmarkTypes.FOOD
+
 
 class NEST(Landmark):
     def __init__(self, x, y):
