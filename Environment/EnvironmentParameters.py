@@ -1,3 +1,4 @@
+nest_count = 1
 max_landmark_count = 10
 max_food_count = 10
 
