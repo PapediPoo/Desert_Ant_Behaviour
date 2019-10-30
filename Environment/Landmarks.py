@@ -7,46 +7,45 @@ class LandmarkTypes(Enum):
     NEST = 2
 
 
-class Landmark():
+class Landmark:
     """
-	* Describes a landmark with its x and y coordinates.
+    * Describes a landmark with its x and y coordinates.
     * Each Landmark has a unique ID.
-	"""	
-
+    """
     last_id = 0
 
     def __init__(self, x, y):
-        self.id = Landmark.last_id
+        self.__id = Landmark.last_id
         Landmark.last_id += 1
 
-        self.x = x
-        self.y = y
+        self.__x = x
+        self.__y = y
 
     def get_id(self):
-        return self.id
+        return self.__id
 
     def get_coordinates(self):
-        return self.x, self.y
+        return self.__x, self.__y
 
     def get_type(self):
         return LandmarkTypes.LANDMARK
 
     @property
     def id(self):
-        return self.id
+        return self.__id
 
     @property
     def x(self):
-        return self.x
+        return self.__x
 
     @property
     def y(self):
-        return self.y
+        return self.__y
 
 
 class FOOD(Landmark):
     def __init__(self, x, y):
-        Landmark.__init__(self, x, y)
+        super().__init__(x, y)
 
     def get_type(self):
         return LandmarkTypes.FOOD
@@ -54,7 +53,7 @@ class FOOD(Landmark):
 
 class NEST(Landmark):
     def __init__(self, x, y):
-        Landmark.__init__(self, x, y)
+        super().__init__(x, y)
 
     def get_type(self):
         return LandmarkTypes.NEST

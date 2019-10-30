@@ -1,5 +1,6 @@
 import time
 import Ant
+from Environment.Environment import Environment
 import Simulation.SimulationParameters as PM
 from Simulation.SimulationData import SimulationResults
 
@@ -9,9 +10,9 @@ class Simulation:
 	* Holds all information about simulation, runs simulation and returns results.
 	'''
 	def __init__(self, environment):
+		self.environment = environment
 		self.ants = []
 		self.setAntCount(PM.ant_count)
-		self.environment = environment
 
 		# TODO: Replace with success condition
 		self.steps = 100
@@ -31,10 +32,12 @@ class Simulation:
 				ant.step()
 				result.addPoint(i, *ant.getPosition())
 		print("Simulation time:", time.time()-start)
+		for ant in self.ants:
+			print("Ant found landmarks:", ant.landmarks)
 		return result
 
 	def setAntCount(self, ant_count):
-		self.ants = [Ant.Ant() for i in range(0, ant_count)]
+		self.ants = [Ant.Ant(self.environment, self.environment.nests[0]) for i in range(0, ant_count)]
 
 	def setSteps(self, steps):
 		# TODO: Replace with success condition

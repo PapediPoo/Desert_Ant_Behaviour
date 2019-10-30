@@ -1,8 +1,10 @@
+import os
 import matplotlib.pyplot as plt
 import tkinter
 import numpy as np
 from Simulation.Simulation import Simulation
 import Simulation.SimulationParameters as SimulationParameters
+from Environment.Environment import Environment
 
 from UI.Drawer import drawEnvironment, drawPaths
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -27,19 +29,22 @@ if __name__ == '__main__':
 		SimulationParameters.ant_count = count_scale.get()
 		SimulationParameters.move_speed = speed_scale.get() / 100
 		SimulationParameters.move_angle = angle_scale.get() / 180 * np.pi
-		SimulationParameters.vision_radius = vision_scale.get()
+		SimulationParameters.vision_range = vision_scale.get()
 		SimulationParameters.speed_error = speed_error_scale.get()
 		SimulationParameters.angle_error = angle_error_scale.get()
 
+		os.system('cls')
 		plt.clf()  # clears previous graph
 		plt.axis("off")
 		plt.tight_layout(0)
-		s = Simulation(None)  # TODO: Pass environment
+
+		e = Environment().generate_random_environment()
+		s = Simulation(e)
 		s.setSteps(250)
 		paths = s.simulate().getAll()
 
 		drawPaths(canvas, paths)
-		drawEnvironment(canvas, None)  # TODO: Pass environment
+		drawEnvironment(canvas, e)
 		canvas.draw()
 
 	# Setup graph canvas and toolbar

@@ -57,17 +57,23 @@ class Ant:
 		elif self.behav is AntBehaviour.search_nest:
 			self.search()
 
-		if self.env is not None and self.env.is_near_food(self.x_pos, self.y_pos):
-			self.food_found = True
+		'''if self.env is not None and self.env.is_near_food(self.x_pos, self.y_pos):
+			self.food_found = True'''
 
-		nests, food, landmarks = self.env.get_visible_landmarks(self.x_pos, self.y_pos)
+		nests = self.env.get_visible_nests(self.x_pos, self.y_pos)
+		food = self.env.get_visible_food(self.x_pos, self.y_pos)
+		landmarks = self.env.get_visible_landmarks(self.x_pos, self.y_pos)
 		if self.food_found is False:
-			self.__writeLandmarks(nests, landmarks)
+			self.__writeLandmarks(landmarks)
+			if len(list(food)) > 0:
+				print("food found")
+				self.__writeLandmarks(food)
+				self.food_found = True
+				self.behav = AntBehaviour.to_food
 
 		# TODO: Implement behaviour transitions
 
 	def search(self):
-		# TODO: Implement Simulation boundaries
 		# Calculate new position&direction as biased random walk
 		new_dir = np.random.normal(self.dir, SP.move_angle)
 		dir_delta = new_dir - self.dir
@@ -81,6 +87,7 @@ class Ant:
 		self.x_pos = Ant.__clip(self.x_pos, -w2, w2)
 		self.y_pos = Ant.__clip(self.y_pos, -h2, h2)
 
+		# Approximation of the integrated path of the ant
 		self.dir_to_next = self.dir_to_next + dir_delta / (self.dist_to_next + SP.move_speed)
 		self.dist_to_next = self.dist_to_next + (1 - dir_delta / np.pi) * SP.move_speed
 
@@ -89,8 +96,12 @@ class Ant:
 		pass
 
 	def toFood(self):
-		# TODO: Implement go-to-food behaviour
-		pass
+		# TODO: Reuse landmark filter from transition code
+		landmarks = self.env.get_visible_landmarks(self.x_pos, self.y_pos)
+		new_dir, new_dist = self.__readLandmarks(landmarks)
+		self.dir = new_dir
+		self.x_pos += np.cos(self.dir) * new_dist
+		self.y_pos += np.sin(self.dir) * new_dist
 
 	def getPosition(self):
 		return self.x_pos, self.y_pos
@@ -109,7 +120,13 @@ class Ant:
 			if landmark is not self.cur_landmark:
 				self.landmarks[landmark.id] = self.dir_to_next, self.dist_to_next
 				self.dist_to_next = 0
+				self.cur_landmark = landmark
 
 	def __readLandmarks(self, landmarks):
-		for landmarks in landmarks:
-			pass
+		avg_dir = 0
+		avg_dist = 0
+		for landmark in landmarks:
+			dir, dist = self.landmarks[landmark.id]
+			avg_dir += dir
+			avg_dist += dist
+		return avg_dir, avg_dist

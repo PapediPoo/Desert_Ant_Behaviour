@@ -1,5 +1,6 @@
 from Environment import EnvironmentParameters as EP
-from Environment.Landmarks import Landmark, Food, Nest
+from Simulation import SimulationParameters as SP
+from Environment.Landmarks import Landmark, FOOD, NEST
 from random import randint, random
 
 
@@ -29,11 +30,11 @@ class Environment:
 
 		# Generate the first nest at (0,0), the remaining at random points.
 		self.nests = []
-		self.nests.append(Nest(0, 0))
+		self.nests.append(NEST(0, 0))
 
 		for i in range(EP.nest_count - 1):
 			x, y = self.get_random_coordinates()
-			nest = Nest(x, y)
+			nest = NEST(x, y)
 			self.nests.append(nest)
 
 		# Generate landmarks
@@ -51,9 +52,10 @@ class Environment:
 		
 		for i in range(num_food):
 			x, y = self.get_random_coordinates()
-			food = Food(x, y)
+			food = FOOD(x, y)
 			self.food.append(food)
 
+		return self
 
 	def get_random_coordinates(self):
 		x = random() * EP.playround_with - EP.playround_with / 2
@@ -61,36 +63,30 @@ class Environment:
 
 		return x, y
 
-
 	def get_visible_nests(self, x, y):
 		""" Returns a list of nests within visual range."""
 
 		return self.get_visible_POIs(x, y, self.nests)
-
 
 	def get_visible_landmarks(self, x, y):
 		""" Returns a list of landmarks within visual range."""
 
 		return self.get_visible_POIs(x, y, self.landmarks)
 
-	
 	def get_visible_food(self, x, y):
 		""" Returns a list of food within visual range."""
 
 		return self.get_visible_POIs(x, y, self.food)
-
 
 	def get_nearby_nest(self, x, y):
 		""" Returns a Nest-Object if it is within action_range or None otherwise."""
 		
 		return self.get_nearby_POI(x, y, self.nest)
 
-
 	def get_nearby_food(self, x, y):
 		""" Returns a Food-Object if it is within action_range or None otherwise."""
 		
 		return self.get_nearby_POI(x, y, self.food)
-
 
 	def get_visible_POIs(self, x, y, POIs):
 		"""
@@ -99,10 +95,9 @@ class Environment:
 		POIs has to be a list of Points of Interest.
 		"""
 
-		is_visible = lambda _poi: self.get_distance((x, y), _poi.get_coordinates()) < EP.visual_range
+		is_visible = lambda _poi: self.get_distance((x, y), _poi.get_coordinates()) < SP.vision_range
 
 		return filter(is_visible, POIs)
-
 
 	def get_nearby_POI(self, x, y, POIs):
 		"""
@@ -128,4 +123,4 @@ class Environment:
 
 		x1, y1 = p1
 		x2, y2 = p2
-		return (x1 - x2) ** 2 + (y1 - y2) ** 2
+		return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** (1/2)
