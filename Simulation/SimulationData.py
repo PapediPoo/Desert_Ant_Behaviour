@@ -19,7 +19,6 @@ class SimulationResults:
 	def addPath(self):
 		# Creates 2 list for x and y positions
 		self.paths.append(([], []))
-		self.paths.append(([], []))
 
 	def getPath(self, path_index):
 		# Returns single path as tuple		

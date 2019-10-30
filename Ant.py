@@ -32,17 +32,22 @@ class Ant:
 		self.dir = np.random.random_sample() * np.pi * 2  # Random starting rotation between 0 and 2Pi
 		self.behav = AntBehaviour.search
 
-		self.dist_to_next = 0
-		self.dir_to_next = self.dir
+		self.next_x = 0
+		self.next_y = 0
 
 		self.env = environment
 		self.food_found = False
 		self.to_food = True
 		self.has_path = True
+		self.done = False
 
 		self.landmarks = {}
 		self.home = home
 		self.cur_landmark = home
+
+	def simulate(self):
+		while self.food_found is False:
+			self.step()
 
 	def step(self):
 		# Does a single simulation step for this ant
@@ -67,19 +72,17 @@ class Ant:
 			self.__writeLandmarks(landmarks)
 			if len(list(food)) > 0:
 				print("food found")
-				self.__writeLandmarks(food)
 				self.food_found = True
+				self.__writeLandmarks(list(food))
 				self.behav = AntBehaviour.to_food
 
+		if self.env.get_nearby_food(self.x_pos, self.y_pos) is not None:
+			self.done = True
 		# TODO: Implement behaviour transitions
 
 	def search(self):
 		# Calculate new position&direction as biased random walk
-		new_dir = np.random.normal(self.dir, SP.move_angle)
-		dir_delta = new_dir - self.dir
-		self.dir = new_dir
-		self.x_pos += np.cos(self.dir) * SP.move_speed
-		self.y_pos += np.sin(self.dir) * SP.move_speed
+		self.__move(np.random.normal(self.dir, SP.move_angle))
 
 		h2 = EP.playround_height/2
 		w2 = EP.playround_with/2
@@ -87,24 +90,25 @@ class Ant:
 		self.x_pos = Ant.__clip(self.x_pos, -w2, w2)
 		self.y_pos = Ant.__clip(self.y_pos, -h2, h2)
 
-		# Approximation of the integrated path of the ant
-		self.dir_to_next = self.dir_to_next + dir_delta / (self.dist_to_next + SP.move_speed)
-		self.dist_to_next = self.dist_to_next + (1 - dir_delta / np.pi) * SP.move_speed
-
 	def toNest(self):
 		# TODO: Implement return-to-nest behaviour
 		pass
 
 	def toFood(self):
 		# TODO: Reuse landmark filter from transition code
-		landmarks = self.env.get_visible_landmarks(self.x_pos, self.y_pos)
-		new_dir, new_dist = self.__readLandmarks(landmarks)
-		self.dir = new_dir
-		self.x_pos += np.cos(self.dir) * new_dist
-		self.y_pos += np.sin(self.dir) * new_dist
+		food = list(self.env.get_visible_food(self.x_pos, self.y_pos))
+		if len(food) > 0:
+			self.__move(self.getAngle(food[0].x, food[0].y))
+		else:
+			landmarks = self.env.get_visible_landmarks(self.x_pos, self.y_pos)
+			new_dir, new_dist = self.__readLandmarks(landmarks)
+			self.__move(new_dir)
 
 	def getPosition(self):
 		return self.x_pos, self.y_pos
+
+	def getAngle(self, x, y):
+		return np.arctan2(y-self.y_pos, x-self.x_pos)
 
 	@staticmethod
 	def __clip(val, min_val, max_val):
@@ -115,18 +119,28 @@ class Ant:
 		else:
 			return max_val
 
+	def __move(self, dir):
+		self.dir = dir
+		self.x_pos += np.cos(self.dir) * SP.move_speed
+		self.y_pos += np.sin(self.dir) * SP.move_speed
+
+		self.next_x += np.cos(self.dir) * SP.move_speed
+		self.next_y += np.sin(self.dir) * SP.move_speed
+
 	def __writeLandmarks(self, landmarks):
 		for landmark in landmarks:
 			if landmark is not self.cur_landmark:
-				self.landmarks[landmark.id] = self.dir_to_next, self.dist_to_next
-				self.dist_to_next = 0
+				self.landmarks[self.cur_landmark.id] = (self.next_x, self.next_y)
+				self.next_x = 0
+				self.next_y = 0
 				self.cur_landmark = landmark
 
 	def __readLandmarks(self, landmarks):
-		avg_dir = 0
-		avg_dist = 0
+		tot_x, tot_y = 0, 0
 		for landmark in landmarks:
-			dir, dist = self.landmarks[landmark.id]
-			avg_dir += dir
-			avg_dist += dist
-		return avg_dir, avg_dist
+			if not landmark.id in self.landmarks:
+				continue
+			x, y = self.landmarks[landmark.id]
+			tot_x += x
+			tot_y += y
+		return tot_x, tot_y

@@ -13,13 +13,12 @@ class Environment:
 	enter it.
 	Food only gets noticed in the action range, whereas landmarks and the nest
 	get noticed in the visual range. Is this the expected behaviour?
-	"""	
+	"""
 
-	def __init__(self):		
+	def __init__(self):
 		self.landmarks = []
 		self.food = []
 		self.nests = []
-	
 
 	def generate_random_environment(self):
 		"""
@@ -40,7 +39,7 @@ class Environment:
 		# Generate landmarks
 		self.landmarks = []
 		num_landmarks = randint(1, EP.max_landmark_count)
-		
+
 		for i in range(num_landmarks):
 			x, y = self.get_random_coordinates()
 			landmark = Landmark(x, y)
@@ -49,7 +48,7 @@ class Environment:
 		# Generate food
 		self.food = []
 		num_food = randint(1, EP.max_food_count)
-		
+
 		for i in range(num_food):
 			x, y = self.get_random_coordinates()
 			food = FOOD(x, y)
@@ -80,12 +79,12 @@ class Environment:
 
 	def get_nearby_nest(self, x, y):
 		""" Returns a Nest-Object if it is within action_range or None otherwise."""
-		
-		return self.get_nearby_POI(x, y, self.nest)
+
+		return self.get_nearby_POI(x, y, self.nests)
 
 	def get_nearby_food(self, x, y):
 		""" Returns a Food-Object if it is within action_range or None otherwise."""
-		
+
 		return self.get_nearby_POI(x, y, self.food)
 
 	def get_visible_POIs(self, x, y, POIs):
@@ -114,7 +113,6 @@ class Environment:
 		else:
 			return nearby_POIs[0]
 
-
 	def get_distance(self, p1, p2):
 		"""
 		Returns the distance between p1 and p2.
@@ -123,4 +121,4 @@ class Environment:
 
 		x1, y1 = p1
 		x2, y2 = p2
-		return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** (1/2)
+		return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** (1 / 2)

@@ -14,9 +14,6 @@ class Simulation:
 		self.ants = []
 		self.setAntCount(PM.ant_count)
 
-		# TODO: Replace with success condition
-		self.steps = 100
-
 	def simulate(self):
 		# TODO: should the SimulationResults object be reused?
 		start = time.time()
@@ -26,9 +23,8 @@ class Simulation:
 			result.addPath()
 			result.addPoint(i, *ant.getPosition())
 
-		# TODO: Replace with success condition
-		for step in range(0, self.steps):
-			for i, ant in enumerate(self.ants):
+		for i, ant in enumerate(self.ants):
+			while ant.done is False:
 				ant.step()
 				result.addPoint(i, *ant.getPosition())
 		print("Simulation time:", time.time()-start)
@@ -38,7 +34,3 @@ class Simulation:
 
 	def setAntCount(self, ant_count):
 		self.ants = [Ant.Ant(self.environment, self.environment.nests[0]) for i in range(0, ant_count)]
-
-	def setSteps(self, steps):
-		# TODO: Replace with success condition
-		self.steps = steps
