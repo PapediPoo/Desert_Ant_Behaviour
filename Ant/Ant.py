@@ -11,8 +11,6 @@ class AntBehaviour(Enum):
 	search = 0
 	to_nest = 1
 	to_food = 2
-	search_food = 3
-	search_nest = 4
 
 
 class Ant:
@@ -27,30 +25,31 @@ class Ant:
 	* directional vectors.
 	'''
 	def __init__(self, environment=None, home=None):
-		self.x_pos = home.x  # Assume that the nest is at location (0,0)
+		self.x_pos = home.x
 		self.y_pos = home.y
 		self.dir = np.random.random_sample() * np.pi * 2  # Random starting rotation between 0 and 2Pi
 		self.behav = AntBehaviour.search
 
-		self.next_x = 0
-		self.next_y = 0
-
 		self.env = environment
 		self.food_found = False
-		self.to_food = True
-		self.has_path = True
 		self.done = False
 
-		self.landmarks = {}
+		self.landmarks_to_food = {}
+		self.landmarks_to_nest = {}
 		self.home = home
 		self.cur_landmark = home
 
-	def simulate(self):
-		while self.food_found is False:
-			self.step()
+		self.__visible_landmarks = []
+		self.__visible_food = []
+		self.__visible_nests = []
 
 	def step(self):
-		# Does a single simulation step for this ant
+		# Get all relevant information in vision
+		self.__visible_nests = list(self.env.get_visible_nests(self.x_pos, self.y_pos))
+		self.__visible_food = list(self.env.get_visible_food(self.x_pos, self.y_pos))
+		self.__visible_landmarks = list(self.env.get_visible_landmarks(self.x_pos, self.y_pos))
+
+		# Do a single simulation step
 		if self.behav is AntBehaviour.search:
 			self.search()
 		elif self.behav is AntBehaviour.to_nest:
@@ -62,21 +61,20 @@ class Ant:
 		elif self.behav is AntBehaviour.search_nest:
 			self.search()
 
-		'''if self.env is not None and self.env.is_near_food(self.x_pos, self.y_pos):
-			self.food_found = True'''
-
-		nests = self.env.get_visible_nests(self.x_pos, self.y_pos)
-		food = self.env.get_visible_food(self.x_pos, self.y_pos)
-		landmarks = self.env.get_visible_landmarks(self.x_pos, self.y_pos)
+		# Do state transitions
 		if self.food_found is False:
-			self.__writeLandmarks(landmarks)
-			if len(list(food)) > 0:
-				print("food found")
-				self.food_found = True
-				self.__writeLandmarks(list(food))
+			self.__writeLandmarks(self.__visible_landmarks)
+			if len(self.__visible_food) > 0:
+				self.__writeLandmarks(self.__visible_food)
 				self.behav = AntBehaviour.to_food
 
 		if self.env.get_nearby_food(self.x_pos, self.y_pos) is not None:
+			self.behav = AntBehaviour.to_nest
+			self.food_found = True
+			print("landmarks to", self.landmarks_to_food)
+			print("landmarks from", self.landmarks_to_nest)
+
+		if self.env.get_nearby_nest(self.x_pos, self.y_pos) is not None and self.food_found:
 			self.done = True
 		# TODO: Implement behaviour transitions
 
@@ -84,25 +82,27 @@ class Ant:
 		# Calculate new position&direction as biased random walk
 		self.__move(np.random.normal(self.dir, SP.move_angle))
 
-		h2 = EP.playround_height/2
-		w2 = EP.playround_with/2
-		# np.clip would make the simulation ~5x slower
-		self.x_pos = Ant.__clip(self.x_pos, -w2, w2)
-		self.y_pos = Ant.__clip(self.y_pos, -h2, h2)
-
 	def toNest(self):
-		# TODO: Implement return-to-nest behaviour
-		pass
+		if len(self.__visible_nests) > 0:
+			# If nest in sight, move to nest
+			self.__move(self.getAngle(self.__visible_nests[0].x, self.__visible_nests[0].y))
+		else:
+			# Move in direction indicated by nearby landmarks
+			x, y = self.__readLandmarks(self.__visible_landmarks + self.__visible_food, False)
+			if x is 0 and y is 0:
+				self.__move(self.dir)
+			else:
+				self.__move(self.getAngle(x+self.x_pos, y+self.y_pos))
 
 	def toFood(self):
-		# TODO: Reuse landmark filter from transition code
-		food = list(self.env.get_visible_food(self.x_pos, self.y_pos))
-		if len(food) > 0:
-			self.__move(self.getAngle(food[0].x, food[0].y))
+		if len(self.__visible_food) > 0:
+			self.__move(self.getAngle(self.__visible_food[0].x, self.__visible_food[0].y))
 		else:
-			landmarks = self.env.get_visible_landmarks(self.x_pos, self.y_pos)
-			new_dir, new_dist = self.__readLandmarks(landmarks)
-			self.__move(new_dir)
+			x, y = self.__readLandmarks(self.__visible_landmarks + self.__visible_nests, True)
+			if x is 0 and y is 0:
+				self.__move(self.dir)
+			else:
+				self.__move(self.getAngle(x, y))
 
 	def getPosition(self):
 		return self.x_pos, self.y_pos
@@ -119,28 +119,35 @@ class Ant:
 		else:
 			return max_val
 
+	@staticmethod
+	def __magnitude(x, y):
+		return ((x **2) + (y **2)) **(1/2)
+
 	def __move(self, dir):
 		self.dir = dir
 		self.x_pos += np.cos(self.dir) * SP.move_speed
 		self.y_pos += np.sin(self.dir) * SP.move_speed
 
-		self.next_x += np.cos(self.dir) * SP.move_speed
-		self.next_y += np.sin(self.dir) * SP.move_speed
+		h2 = EP.playround_height/2
+		w2 = EP.playround_with/2
+		# np.clip would make the simulation ~5x slower
+		self.x_pos = Ant.__clip(self.x_pos, -w2, w2)
+		self.y_pos = Ant.__clip(self.y_pos, -h2, h2)
 
 	def __writeLandmarks(self, landmarks):
 		for landmark in landmarks:
 			if landmark is not self.cur_landmark:
-				self.landmarks[self.cur_landmark.id] = (self.next_x, self.next_y)
-				self.next_x = 0
-				self.next_y = 0
+				self.landmarks_to_food[self.cur_landmark.id] = (landmark.x - self.cur_landmark.x, landmark.y - self.cur_landmark.y)
+				if landmark.id not in self.landmarks_to_nest:
+					self.landmarks_to_nest[landmark.id] = (self.cur_landmark.x - landmark.x, self.cur_landmark.y - landmark.y)
 				self.cur_landmark = landmark
 
-	def __readLandmarks(self, landmarks):
+	def __readLandmarks(self, landmarks, to_food=True):
 		tot_x, tot_y = 0, 0
 		for landmark in landmarks:
-			if not landmark.id in self.landmarks:
-				continue
-			x, y = self.landmarks[landmark.id]
+			l = (self.landmarks_to_food if to_food else self.landmarks_to_nest)
+			if landmark.id not in l: continue
+			x, y = l[landmark.id]
 			tot_x += x
 			tot_y += y
 		return tot_x, tot_y

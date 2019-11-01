@@ -1,4 +1,3 @@
-import os
 import matplotlib.pyplot as plt
 import tkinter
 import numpy as np
@@ -32,7 +31,6 @@ if __name__ == '__main__':
         SimulationParameters.move_angle = angle_scale.get() / 180 * np.pi
         SimulationParameters.vision_range = vision_scale.get()
 
-        os.system('cls')
         plt.clf()  # clears previous graph
         plt.axis("off")
         plt.tight_layout(0)

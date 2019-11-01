@@ -1,5 +1,5 @@
 import time
-import Ant
+from Ant import Ant
 from Environment.Environment import Environment
 import Simulation.SimulationParameters as PM
 from Simulation.SimulationData import SimulationResults
@@ -13,6 +13,7 @@ class Simulation:
 		self.environment = environment
 		self.ants = []
 		self.setAntCount(PM.ant_count)
+		self.result = None
 
 	def simulate(self):
 		# TODO: should the SimulationResults object be reused?
@@ -28,9 +29,19 @@ class Simulation:
 				ant.step()
 				result.addPoint(i, *ant.getPosition())
 		print("Simulation time:", time.time()-start)
-		for ant in self.ants:
-			print("Ant found landmarks:", ant.landmarks)
 		return result
+
+	def simulateStep(self):
+		if self.result is None:
+			self.result = SimulationResults()
+			self.setAntCount(PM.ant_count)
+			for i, ant in enumerate(self.ants):
+				self.result.addPath()
+				self.result.addPoint(i, *ant.getPosition())
+		for i, ant in enumerate(self.ants):
+			ant.step()
+			self.result.addPoint(i, *ant.getPosition())
+		return self.result
 
 	def setAntCount(self, ant_count):
 		self.ants = [Ant.Ant(self.environment, self.environment.nests[0]) for i in range(0, ant_count)]

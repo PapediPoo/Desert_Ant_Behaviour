@@ -22,6 +22,7 @@ def drawEnvironment(canvas, environment, draw=False):
         plt.scatter(food.x, food.y, c=food_color)
     for landmark in environment.landmarks:
         plt.scatter(landmark.x, landmark.y, c=landmark_color)
+        plt.annotate(landmark.id, (landmark.x, landmark.y))
     canvas.figure = plt.gcf()
     if draw:
         canvas.draw()
