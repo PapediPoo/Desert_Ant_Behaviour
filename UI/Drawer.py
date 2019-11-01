@@ -12,6 +12,9 @@ food_color = "blue"
 landmark_color = "orange"
 vision_color = "turquoise"
 
+'''
+* Draws Environment boundaries, landmarks, nests and food on a given canvas
+'''
 def drawEnvironment(canvas, environment, draw=False):
     h2 = EP.playround_height / 2
     w2 = EP.playround_with / 2
@@ -27,7 +30,9 @@ def drawEnvironment(canvas, environment, draw=False):
     if draw:
         canvas.draw()
 
-
+'''
+* Draws ant paths on a given canvas
+'''
 def drawPaths(canvas, paths, draw=False):
     for path in paths:
         plt.plot(path[0], path[1], path_color)

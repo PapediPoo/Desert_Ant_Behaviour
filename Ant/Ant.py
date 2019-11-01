@@ -1,6 +1,7 @@
 from enum import Enum
 import Simulation.SimulationParameters as SP
 import Environment.EnvironmentParameters as EP
+import Ant.Util as util
 import numpy as np
 
 
@@ -85,43 +86,31 @@ class Ant:
 	def toNest(self):
 		if len(self.__visible_nests) > 0:
 			# If nest in sight, move to nest
-			self.__move(self.getAngle(self.__visible_nests[0].x, self.__visible_nests[0].y))
+			self.__move(util.angle(self.__visible_nests[0].x - self.x_pos, self.__visible_nests[0].y - self.y_pos))
 		else:
 			# Move in direction indicated by nearby landmarks
 			x, y = self.__readLandmarks(self.__visible_landmarks + self.__visible_food, False)
 			if x is 0 and y is 0:
+				# Move straight if no landmarks in vision
 				self.__move(self.dir)
 			else:
-				self.__move(self.getAngle(x+self.x_pos, y+self.y_pos))
+				self.__move(util.angle(x, y))
 
 	def toFood(self):
 		if len(self.__visible_food) > 0:
-			self.__move(self.getAngle(self.__visible_food[0].x, self.__visible_food[0].y))
+			# If food visible, move to food
+			self.__move(util.angle(self.__visible_food[0].x - self.x_pos, self.__visible_food[0].y - self.y_pos))
 		else:
+			# Move in direction indicated by nearby landmarks
 			x, y = self.__readLandmarks(self.__visible_landmarks + self.__visible_nests, True)
 			if x is 0 and y is 0:
+				# Move straight if no landmarks in vision
 				self.__move(self.dir)
 			else:
-				self.__move(self.getAngle(x, y))
+				self.__move(util.angle(x, y))
 
 	def getPosition(self):
 		return self.x_pos, self.y_pos
-
-	def getAngle(self, x, y):
-		return np.arctan2(y-self.y_pos, x-self.x_pos)
-
-	@staticmethod
-	def __clip(val, min_val, max_val):
-		if min_val < val < max_val:
-			return val
-		elif val < min_val:
-			return min_val
-		else:
-			return max_val
-
-	@staticmethod
-	def __magnitude(x, y):
-		return ((x **2) + (y **2)) **(1/2)
 
 	def __move(self, dir):
 		self.dir = dir
@@ -131,10 +120,11 @@ class Ant:
 		h2 = EP.playround_height/2
 		w2 = EP.playround_with/2
 		# np.clip would make the simulation ~5x slower
-		self.x_pos = Ant.__clip(self.x_pos, -w2, w2)
-		self.y_pos = Ant.__clip(self.y_pos, -h2, h2)
+		self.x_pos = util.clip(self.x_pos, -w2, w2)
+		self.y_pos = util.clip(self.y_pos, -h2, h2)
 
 	def __writeLandmarks(self, landmarks):
+		# Reads landmark directions from ant memory and sums them up
 		for landmark in landmarks:
 			if landmark is not self.cur_landmark:
 				self.landmarks_to_food[self.cur_landmark.id] = (landmark.x - self.cur_landmark.x, landmark.y - self.cur_landmark.y)
@@ -143,6 +133,7 @@ class Ant:
 				self.cur_landmark = landmark
 
 	def __readLandmarks(self, landmarks, to_food=True):
+		# Writes landmarks into memory of and
 		tot_x, tot_y = 0, 0
 		for landmark in landmarks:
 			l = (self.landmarks_to_food if to_food else self.landmarks_to_nest)
