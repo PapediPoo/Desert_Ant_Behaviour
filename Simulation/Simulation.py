@@ -1,4 +1,7 @@
 import time
+import threading
+import queue
+import Ant.Util as util
 from Ant import Ant
 from Environment.Environment import Environment
 import Simulation.SimulationParameters as PM
@@ -14,34 +17,31 @@ class Simulation:
 		self.ants = []
 		self.setAntCount(PM.ant_count)
 		self.result = None
+		self.threads = {}
 
-	def simulate(self):
-		# TODO: should the SimulationResults object be reused?
+	def simulateAll(self):
+		self.result = SimulationResults()
 		start = time.time()
-		result = SimulationResults()
+
 		self.setAntCount(PM.ant_count)
-		for i, ant in enumerate(self.ants):
-			result.addPath()
-			result.addPoint(i, *ant.getPosition())
+		for ant in self.ants:
+			self.result.addPath()
+			self.result.addPoint(ant.id, *ant.getPosition())
 
-		for i, ant in enumerate(self.ants):
-			while ant.done is False:
-				ant.step()
-				result.addPoint(i, *ant.getPosition())
-		print("Simulation time:", time.time()-start)
-		return result
+		for ant in self.ants:
+			t = util.KillThread(target=self.simulate, args=[ant,])
+			t.start()
+			self.threads[t.ident] = t
+			t.killJoin(2)
 
-	def simulateStep(self):
-		if self.result is None:
-			self.result = SimulationResults()
-			self.setAntCount(PM.ant_count)
-			for i, ant in enumerate(self.ants):
-				self.result.addPath()
-				self.result.addPoint(i, *ant.getPosition())
-		for i, ant in enumerate(self.ants):
-			ant.step()
-			self.result.addPoint(i, *ant.getPosition())
+
+		print("Simulation time:", time.time() - start)
 		return self.result
 
+	def simulate(self, ant):
+		while not ant.done and not (threading.get_ident() in self.threads and self.threads[threading.get_ident()].killed()):
+			ant.step()
+			self.result.addPoint(ant.id, *ant.getPosition())
+
 	def setAntCount(self, ant_count):
-		self.ants = [Ant.Ant(self.environment, self.environment.nests[0]) for i in range(0, ant_count)]
+		self.ants = [Ant.Ant(i, self.environment, self.environment.nests[0]) for i in range(0, ant_count)]

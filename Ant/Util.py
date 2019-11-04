@@ -1,4 +1,5 @@
 import numpy as np
+import threading
 
 def angle(x, y):
 	# calculates angle between (x,y) and the x-axis
@@ -13,3 +14,21 @@ def clip(val, min_val, max_val):
 		return min_val
 	else:
 		return max_val
+
+
+class KillThread(threading.Thread):
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+		self.__kill_event = threading.Event()
+
+	def kill(self):
+		self.__kill_event.set()
+
+	def killed(self):
+		return self.__kill_event.is_set()
+
+	def killJoin(self, time):
+		self.join(time)
+		if self.is_alive():
+			print("time limit exceeded. Thread killed")
+			self.kill()

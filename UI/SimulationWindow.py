@@ -29,6 +29,7 @@ if __name__ == '__main__':
         SimulationParameters.ant_count = count_scale.get()
         SimulationParameters.move_speed = speed_scale.get() / 100
         SimulationParameters.move_angle = angle_scale.get() / 180 * np.pi
+        SimulationParameters.traceback_angle = traceback_angle_scale.get() / 180 * np.pi
         SimulationParameters.vision_range = vision_scale.get()
 
         plt.clf()  # clears previous graph
@@ -37,9 +38,13 @@ if __name__ == '__main__':
 
         e = Environment().generate_random_environment()
         s = Simulation(e)
-        paths = s.simulate().getAll()
+        result = s.simulateAll()
 
-        drawPaths(canvas, paths)
+        if result is None:
+            print("no result")
+            return
+
+        drawPaths(canvas, result.getAll())
         drawEnvironment(canvas, e)
         canvas.draw()
 
@@ -74,6 +79,10 @@ if __name__ == '__main__':
     angle_scale.set(15)
     angle_scale.pack(side=tkinter.TOP)
 
+    traceback_angle_scale = tkinter.Scale(control_panel, from_=1, to=90, orient=tkinter.HORIZONTAL, label="Ant traceback angle")
+    traceback_angle_scale.set(5)
+    traceback_angle_scale.pack(side=tkinter.TOP)
+
     vision_scale = tkinter.Scale(control_panel, from_=1, to=100, orient=tkinter.HORIZONTAL, label="Ant vision radius")
     vision_scale.set(50)
     vision_scale.pack(side=tkinter.TOP)
@@ -86,5 +95,4 @@ if __name__ == '__main__':
     quit_button.pack(side=tkinter.BOTTOM)
     root.protocol("WM_DELETE_WINDOW", _quit)
 
-    _simulate()
     tkinter.mainloop()

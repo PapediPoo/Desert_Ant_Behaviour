@@ -38,7 +38,7 @@ class Environment:
 
 		# Generate landmarks
 		self.landmarks = []
-		num_landmarks = randint(1, EP.max_landmark_count)
+		num_landmarks = EP.landmark_count
 
 		for i in range(num_landmarks):
 			x, y = self.get_random_coordinates()
@@ -47,7 +47,7 @@ class Environment:
 
 		# Generate food
 		self.food = []
-		num_food = randint(1, EP.max_food_count)
+		num_food = EP.food_count
 
 		for i in range(num_food):
 			x, y = self.get_random_coordinates()

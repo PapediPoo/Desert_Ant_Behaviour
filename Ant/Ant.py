@@ -25,7 +25,9 @@ class Ant:
 	* on the path from the nest to the food. If it sees multiple landmarks, it will take the sum of the
 	* directional vectors.
 	'''
-	def __init__(self, environment=None, home=None):
+	def __init__(self, id, environment=None, home=None):
+		self.id = id
+
 		self.x_pos = home.x
 		self.y_pos = home.y
 		self.dir = np.random.random_sample() * np.pi * 2  # Random starting rotation between 0 and 2Pi
@@ -69,11 +71,11 @@ class Ant:
 				self.__writeLandmarks(self.__visible_food)
 				self.behav = AntBehaviour.to_food
 
-		if self.env.get_nearby_food(self.x_pos, self.y_pos) is not None:
+		if self.env.get_nearby_food(self.x_pos, self.y_pos) is not None and not self.food_found:
 			self.behav = AntBehaviour.to_nest
 			self.food_found = True
-			print("landmarks to", self.landmarks_to_food)
-			print("landmarks from", self.landmarks_to_nest)
+			# print("landmarks to", self.landmarks_to_food)
+			# print("landmarks from", self.landmarks_to_nest)
 
 		if self.env.get_nearby_nest(self.x_pos, self.y_pos) is not None and self.food_found:
 			self.done = True
@@ -91,8 +93,9 @@ class Ant:
 			# Move in direction indicated by nearby landmarks
 			x, y = self.__readLandmarks(self.__visible_landmarks + self.__visible_food, False)
 			if x is 0 and y is 0:
-				# Move straight if no landmarks in vision
-				self.__move(self.dir)
+				# Move mostly straight if no landmarks in vision
+				# self.__move(self.dir)
+				self.__move(np.random.normal(self.dir, SP.traceback_angle))
 			else:
 				self.__move(util.angle(x, y))
 
@@ -104,8 +107,9 @@ class Ant:
 			# Move in direction indicated by nearby landmarks
 			x, y = self.__readLandmarks(self.__visible_landmarks + self.__visible_nests, True)
 			if x is 0 and y is 0:
-				# Move straight if no landmarks in vision
-				self.__move(self.dir)
+				# Move mostly straight if no landmarks in vision
+				# self.__move(self.dir)
+				self.__move(np.random.normal(self.dir, SP.traceback_angle))
 			else:
 				self.__move(util.angle(x, y))
 
