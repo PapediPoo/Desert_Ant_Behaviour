@@ -42,6 +42,10 @@ class Ant:
 		self.home = home
 		self.cur_landmark = home
 
+		self.certainty = 0
+		# The ant expects a known landmark after walking some distance. If it does not find any known landmarks,
+		# it's certainty drops and it goes back to searching
+
 		self.__visible_landmarks = []
 		self.__visible_food = []
 		self.__visible_nests = []
@@ -77,9 +81,18 @@ class Ant:
 			# print("landmarks to", self.landmarks_to_food)
 			# print("landmarks from", self.landmarks_to_nest)
 
+		if self.behav is AntBehaviour.to_nest and self.food_found and self.certainty < 0:
+			# Executed when the and found food but got lost on the way back
+			print("uncertain! back to search")
+			self.behav = AntBehaviour.search
+
+		if self.behav is AntBehaviour.search and self.food_found and not self.__readLandmarks(self.__visible_landmarks + self.__visible_food, False) == (0, 0):
+			# Executed when the ant already found food but got lost on its way back and gets back on track
+			print("regained certainty")
+			self.behav = AntBehaviour.to_nest
+
 		if self.env.get_nearby_nest(self.x_pos, self.y_pos) is not None and self.food_found:
 			self.done = True
-		# TODO: Implement behaviour transitions
 
 	def search(self):
 		# Calculate new position&direction as biased random walk
@@ -96,8 +109,10 @@ class Ant:
 				# Move mostly straight if no landmarks in vision
 				# self.__move(self.dir)
 				self.__move(np.random.normal(self.dir, SP.traceback_angle))
+				self.certainty -= SP.move_speed
 			else:
 				self.__move(util.angle(x, y))
+				self.certainty = util.magnitude(x, y)
 
 	def toFood(self):
 		if len(self.__visible_food) > 0:
@@ -137,7 +152,7 @@ class Ant:
 				self.cur_landmark = landmark
 
 	def __readLandmarks(self, landmarks, to_food=True):
-		# Writes landmarks into memory of and
+		# Writes landmarks into memory of ant
 		tot_x, tot_y = 0, 0
 		for landmark in landmarks:
 			l = (self.landmarks_to_food if to_food else self.landmarks_to_nest)

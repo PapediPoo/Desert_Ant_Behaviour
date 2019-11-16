@@ -1,6 +1,7 @@
 import numpy as np
 import threading
 
+
 def angle(x, y):
 	# calculates angle between (x,y) and the x-axis
 	return np.arctan2(y, x)
@@ -32,3 +33,7 @@ class KillThread(threading.Thread):
 		if self.is_alive():
 			print("time limit exceeded. Thread killed")
 			self.kill()
+
+
+def magnitude(x, y):
+	return (x ** 2 + y **2) ** (1/2)
