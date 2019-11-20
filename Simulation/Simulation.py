@@ -36,6 +36,7 @@ class Simulation:
 
 
 		print("Simulation time:", time.time() - start)
+
 		return self.result
 
 	def simulate(self, ant):

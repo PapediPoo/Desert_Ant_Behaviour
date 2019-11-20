@@ -11,8 +11,6 @@ class Environment:
 	The visual range describes the distance to landmarks which are seen, the
 	action range the minimal distance of the food to eat it and to the nest to
 	enter it.
-	Food only gets noticed in the action range, whereas landmarks and the nest
-	get noticed in the visual range. Is this the expected behaviour?
 	"""
 
 	def __init__(self):
