@@ -28,10 +28,7 @@ def measure_steps():
     SimulationParameters.vision_range = 50
 
     results = run_simulations(10)
-
     print(results)
 
 if __name__  == '__main__':
     measure_steps()
-
-
