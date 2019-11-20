@@ -14,7 +14,7 @@ class SimulationResults:
 		self.foundFood = []
 		self.foundBack = []
 		self.stepsToFood = []
-		self.stepsToNest = []		
+		self.stepsToNest = []
 
 	def addPath(self, color="r"):
 		# Creates 2 list for x, y positions.

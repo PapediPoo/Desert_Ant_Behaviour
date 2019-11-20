@@ -9,6 +9,12 @@ from multiprocessing import Pool
 NUM_CORES = 4
 
 def run(index):
+    SimulationParameters.ant_count = 2
+    SimulationParameters.move_speed = 1
+    SimulationParameters.move_angle = 15 / 180 * np.pi
+    SimulationParameters.traceback_angle = 5 / 180 * np.pi
+    SimulationParameters.vision_range = 15
+
     e = Environment().generate_random_environment()
     s = Simulation(e)
 
@@ -22,12 +28,6 @@ def run_simulations(num_simulations = 10):
     return results
 
 def measure_steps():
-    SimulationParameters.ant_count = 2
-    SimulationParameters.move_speed = 1
-    SimulationParameters.move_angle = 15 / 180 * np.pi
-    SimulationParameters.traceback_angle = 5 / 180 * np.pi
-    SimulationParameters.vision_range = 50
-
     results = run_simulations(10)
 
     allResults = SimulationResults()
