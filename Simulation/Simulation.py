@@ -44,5 +44,11 @@ class Simulation:
 			ant.step()
 			self.result.addPoint(ant.id, *ant.getPosition())
 
+			if ant.food_found:
+				self.result.foodFound(ant.id)
+
+		if ant.done:
+			self.result.nestFound(ant.id)
+
 	def setAntCount(self, ant_count):
 		self.ants = [Ant.Ant(i, self.environment, self.environment.nests[0]) for i in range(0, ant_count)]
