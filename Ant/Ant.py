@@ -83,12 +83,12 @@ class Ant:
 
 		if self.behav is AntBehaviour.to_nest and self.food_found and self.certainty < 0:
 			# Executed when the and found food but got lost on the way back
-			print("uncertain! back to search")
+			# print("uncertain! back to search")
 			self.behav = AntBehaviour.search
 
 		if self.behav is AntBehaviour.search and self.food_found and not self.__readLandmarks(self.__visible_landmarks + self.__visible_food, False) == (0, 0):
 			# Executed when the ant already found food but got lost on its way back and gets back on track
-			print("regained certainty")
+			# print("regained certainty")
 			self.behav = AntBehaviour.to_nest
 
 		if self.env.get_nearby_nest(self.x_pos, self.y_pos) is not None and self.food_found:

@@ -36,7 +36,11 @@ if __name__ == '__main__':
         plt.axis("off")
         plt.tight_layout(0)
 
-        e = Environment().generate_random_environment()
+        # e = Environment().generate_random_environment()
+        e = Environment().generate_environment(
+            [],
+            [(250, 0)],
+            [(100, 0), (-100, 0), (0, 100), (0, -100), (200, 200), (200, -200), (-200, -200), (-200, 200)])
         s = Simulation(e)
         result = s.simulateAll()
 
@@ -44,7 +48,9 @@ if __name__ == '__main__':
             print("no result")
             return
 
-        drawPaths(canvas, result.getAll())
+        print(result.stepsToFood, result.stepsToNest)
+
+        #drawPaths(canvas, result.getAll())
         drawEnvironment(canvas, e)
         canvas.draw()
 

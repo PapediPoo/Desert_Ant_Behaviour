@@ -12,6 +12,8 @@ class Simulation:
 	'''
 	* Holds all information about simulation, runs simulation and returns results.
 	'''
+	__kill_time = 5
+
 	def __init__(self, environment):
 		self.environment = environment
 		self.ants = []
@@ -32,9 +34,7 @@ class Simulation:
 			t = util.KillThread(target=self.simulate, args=[ant,])
 			t.start()
 			self.threads[t.ident] = t
-			t.killJoin(2)
-
-
+			t.killJoin(Simulation.__kill_time)
 		print("Simulation time:", time.time() - start)
 
 		return self.result

@@ -18,6 +18,27 @@ class Environment:
 		self.food = []
 		self.nests = []
 
+	def generate_environment(self, nests=[], food=[], landmarks=[]):
+		# Generate nest at 0,0
+		self.landmarks = []
+		self.food = []
+		self.nests = []
+		self.nests.append(NEST(0, 0))
+
+		for n in nests:
+			nest = NEST(*n)
+			self.nests.append(nest)
+
+		for f in food:
+			food = FOOD(*f)
+			self.food.append(food)
+
+		for l in landmarks:
+			landmark = Landmark(*l)
+			self.landmarks.append(landmark)
+
+		return self
+
 	def generate_random_environment(self):
 		"""
 		Generates a random environment (i.e. landmarks, food and nests) according
