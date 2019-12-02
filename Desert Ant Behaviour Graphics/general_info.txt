@@ -1,0 +1,18 @@
+- Simulated 100 ants per step.
+- Simulated on 600x600 environment
+- The setup of the environment can be found as an .svg file
+- If another environment was used, it will be stated.
+
+Observations
+- Sometimes strong deviations between single data points. This is probably due to the strongly random nature of the simulation.
+- Thermal throttling might influence the precentage of ants that find back to the nest. This is because the simulation has a timer
+based cutoff which favours faster CPUs. But if an ant really gets lost it usually is easy to tell, since the lost ant takes
+ orders of magnitude longer to find the nest than an ant that isn't lost.
+- Simulating "only" 100 Ants per iteration might seem like a small number. But since each ant can take up to 5 seconds, each core
+handles 25 ants and there are about 30 iterations per simulation, a single simulation already takes around 45-70 minutes.
+
+Standard fixed parameters
+- move_speed:		 100%
+- search_angle:		 15°
+- traceback_angle	 5°
+- vision_range		 25
