@@ -53,17 +53,7 @@ The code is written for Python 3.74. We used the following libraries:
 - numpy
 - matplotlib
 
-They can be installed using pip with
-
-    pip install numpy matplotlib
-
-Since we use sibling package imports, you have to use the -m argument when executing a script from command line:
-
-    python -m UI.SimulationWindow
-
-.
-
-If you do not have Python installed on your system:
+If you do not have Python nor the libraries installed on your system:
 
 1.  Install Python 3.7.4 using the excecutables on https://www.python.org/downloads/release/python-374/.
 2.  Install numyp and matplotlib using the following command:
