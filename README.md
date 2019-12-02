@@ -46,7 +46,7 @@ In MeasureStepCount.py, mutiple simulations are executed simultaniously on multi
 
 However: to change the parameters tested, one has to directly change the code in MeasureStepCount.py. Thus, do not run it unless you understand the code. Furthermore, one has to consider that simulating even one degree of freedom takes quite some time depending on the processor and memory.
 
-Instead of runnig simulations on your own, we recommend you to take a look at the graphs produced by us. They are located in the folder "Desert Ant Behaviour Graphics".
+Instead of running the simulations on your own, we recommend you to take a look at the graphs produced by us. They are located in the folder "Desert Ant Behaviour Graphics".
 
 ## Notes Regarding Reproducability
 
