@@ -2,17 +2,15 @@
 Run this to graphically simulate ants.
 """
 
-import matplotlib.pyplot as plt
-import tkinter
-import numpy as np
+from UI.Drawer import drawEnvironment, drawPaths
 from Simulation.Simulation import Simulation
 import Simulation.SimulationParameters as SimulationParameters
 from Environment.Environment import Environment
 
-from UI.Drawer import drawEnvironment, drawPaths
+import matplotlib.pyplot as plt
+import tkinter
+import numpy as np
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-from matplotlib.backend_bases import key_press_handler
-from matplotlib.figure import Figure
 
 if __name__ == '__main__':
     # Setup window
@@ -44,10 +42,7 @@ if __name__ == '__main__':
         result = s.simulateAll()
 
         if result is None:
-            print("no result")
             return
-
-        print(result.stepsToFood, result.stepsToNest)
 
         drawPaths(canvas, result.getAll())
         drawEnvironment(canvas, e)

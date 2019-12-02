@@ -2,5 +2,6 @@
     "python.pythonPath": "C:\\Users\\tobia\\Miniconda3\\python.exe",
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
-    "python.linting.enabled": false
+    "python.linting.enabled": true,
+    "python.linting.banditEnabled": false
 }

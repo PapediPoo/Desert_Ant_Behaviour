@@ -1,9 +1,6 @@
-import tkinter
-import matplotlib.pyplot as plt
 import Environment.EnvironmentParameters as EP
-import Simulation.SimulationParameters as SP
-from Environment.Environment import Environment
-from Environment.Landmarks import Landmark
+
+import matplotlib.pyplot as plt
 
 border_color = "gray"
 path_color = "tomato"

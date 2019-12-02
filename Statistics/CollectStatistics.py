@@ -1,12 +1,13 @@
-import numpy as np
 from Simulation.Simulation import Simulation
 from Simulation.SimulationData import SimulationResults
 import Simulation.SimulationParameters as SimulationParameters
-import Environment.EnvironmentParameters as EnvironmentParameters
 from Environment.Environment import Environment
-import matplotlib.pyplot as plt
+import Environment.EnvironmentParameters as EnvironmentParameters
 
+import numpy as np
+import matplotlib.pyplot as plt
 from multiprocessing import Pool
+
 
 NUM_CORES = 4
 

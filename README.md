@@ -40,7 +40,7 @@ With the graphical interface, one can play with the various simulation parameter
 
 To gather statistics of the typical behaviour with respect to different parameters, a batch simulation can be performed by executing 
 
-    python -m Statistics.MeasureStepCount
+    python -m Statistics.CollectStatistics
 
 In MeasureStepCount.py, mutiple simulations are executed simultaniously on multiple cores. The simulations on each process are parameterized by the thread index and can thus simulate differents parameters. One has to consider that simulating even one degree of freedom takes quite some time depending on the processor and memory.
 
