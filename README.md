@@ -14,19 +14,19 @@ We simulated the food-gathering behaviour of desert ants. Our environment is rep
 
 The environment can be controlled by the following parameters (found in Environment/EnvironmentParameters.py):
 
-    - the number of nests,
-    - the number of landmarks,
-    - the number of food sources,
-    - the width and the height of the playground and
-    - the action range which describes the minimal distances for which an ant has "found" the nest or a food source.
+- the number of nests,
+- the number of landmarks,
+- the number of food sources,
+- the width and the height of the playground and
+- the action range which describes the minimal distances for which an ant has "found" the nest or a food source.
 
 The simulation itself can be controlled by the following parameters (found in Simulation/SimulationParameters.py):
 
-    - the move-speed which describes the distance traveled during a timestep,
-    - the standard deviation of the move angle in food-search behaviour,
-    - the standard deviation of the move angle in nest-search behaviour,
-    - the vision range which describes the minimal distance for which an ant "sees" a landmark and
-    - the number of ants.
+- the move-speed which describes the distance traveled during a timestep,
+- the standard deviation of the move angle in food-search behaviour,
+- the standard deviation of the move angle in nest-search behaviour,
+- the vision range which describes the minimal distance for which an ant "sees" a landmark and
+- the number of ants.
 
 There are two ways to run a simulation:
 
@@ -50,8 +50,8 @@ The graphs produced by the batch simulations we perfomed can be found in the fol
 
 The code is written for Python 3.7. We used the following libraries:
 
-    - numpy
-    - matplotlib
+- numpy
+- matplotlib
 
 They can be installed using pip with
 
