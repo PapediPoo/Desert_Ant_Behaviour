@@ -10,7 +10,7 @@ from Simulation.SimulationData import SimulationResults
 
 class Simulation:
 	'''
-	* Holds all information about simulation, runs simulation and returns results.
+	* Holds all information about a simulation, runs the simulation and returns its results.
 	'''
 	__kill_time = 5
 

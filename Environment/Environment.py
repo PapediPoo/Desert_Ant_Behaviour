@@ -115,7 +115,7 @@ class Environment:
 
 		is_visible = lambda _poi: self.get_distance((x, y), _poi.get_coordinates()) < SP.vision_range
 
-		return filter(is_visible, POIs)
+		return list(filter(is_visible, POIs))
 
 	def get_nearby_POI(self, x, y, POIs):
 		"""

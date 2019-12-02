@@ -31,7 +31,6 @@ class KillThread(threading.Thread):
 	def killJoin(self, time):
 		self.join(time)
 		if self.is_alive():
-			# print("time limit exceeded. Thread killed")
 			self.kill()
 
 

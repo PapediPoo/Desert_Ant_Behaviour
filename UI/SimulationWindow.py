@@ -1,3 +1,7 @@
+"""
+Run this to graphically simulate ants.
+"""
+
 import matplotlib.pyplot as plt
 import tkinter
 import numpy as np
@@ -11,7 +15,6 @@ from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure import Figure
 
 if __name__ == '__main__':
-    # TODO: Add visual representation of environment
     # Setup window
     root = tkinter.Tk()
     root.title("Desert Ant Behaviour Simulation")
@@ -36,11 +39,7 @@ if __name__ == '__main__':
         plt.axis("off")
         plt.tight_layout(0)
 
-        # e = Environment().generate_random_environment()
-        e = Environment().generate_environment(
-            [],
-            [(250, 0)],
-            [(100, 0), (-100, 0), (0, 100), (0, -100), (200, 200), (200, -200), (-200, -200), (-200, 200)])
+        e = Environment().generate_random_environment()
         s = Simulation(e)
         result = s.simulateAll()
 
@@ -50,7 +49,7 @@ if __name__ == '__main__':
 
         print(result.stepsToFood, result.stepsToNest)
 
-        #drawPaths(canvas, result.getAll())
+        drawPaths(canvas, result.getAll())
         drawEnvironment(canvas, e)
         canvas.draw()
 

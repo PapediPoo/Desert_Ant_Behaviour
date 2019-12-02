@@ -14,13 +14,13 @@ NUM_CORES = 4
 def run(index):
     EnvironmentParameters.playround_with = 600
     EnvironmentParameters.playround_height = 600
-    EnvironmentParameters.food_count = 1
-    EnvironmentParameters.landmark_count = 0
+    EnvironmentParameters.food_count = index // 4
+    EnvironmentParameters.landmark_count = index
 
     SimulationParameters.ant_count = 25
     SimulationParameters.move_speed = 1
     SimulationParameters.move_angle = 15 / 180 * np.pi
-    SimulationParameters.traceback_angle = index / 180 * np.pi
+    SimulationParameters.traceback_angle = 5 / 180 * np.pi
     SimulationParameters.vision_range = 25
 
     e = Environment().generate_environment(
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     y_axis3 = []
     y_axis4 = []
 
-    for i in range(0, 35, 1):
+    for i in range(0, 40, 1):
         results = measure_steps(i)
 
         num_ants = len(results.foundFood)
@@ -69,9 +69,6 @@ if __name__ == '__main__':
 
         avg_steps_to_food = sum(results.stepsToFood) / num_ants
         avg_steps_to_nest = sum(results.stepsToNest) / num_ants
-
-        # print(list(zip(results.foundFood, results.stepsToFood)))
-        # print(list(zip(results.foundBack, results.stepsToNest)))
 
         print(num_ants, 'ants simulated.')
 
