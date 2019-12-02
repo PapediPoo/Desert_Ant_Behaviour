@@ -44,6 +44,8 @@ To gather statistics of the typical behaviour with respect to different paramete
 
 In MeasureStepCount.py, mutiple simulations are executed simultaniously on multiple cores. The simulations on each process are parameterized by the thread index and can thus simulate differents parameters. One has to consider that simulating even one degree of freedom takes quite some time depending on the processor and memory.
 
+The graphs produced by the batch simulations we perfomed can be found in the folder "Desert Ant Behaviour Graphics".
+
 ## Notes Regarding Reproducability
 
 The code is written for Python 3.7. We used the following libraries:
