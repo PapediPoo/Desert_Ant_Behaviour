@@ -57,7 +57,7 @@ The code is written for Python 3.7.4. We used the following libraries:
 
 If you do not have Python nor the libraries installed on your system:
 
-1.  Install Python 3.7.4 using the excecutables on https://www.python.org/downloads/release/python-374/.
+1.  Install Python 3.7.4 using the executables on https://www.python.org/downloads/release/python-374/.
 2.  Install numyp and matplotlib using the following command:
 
         pip install numpy matplotlib
