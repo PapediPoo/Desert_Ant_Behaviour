@@ -42,9 +42,11 @@ To gather statistics of the typical behaviour with respect to different paramete
 
     python -m Statistics.CollectStatistics
 
-In MeasureStepCount.py, mutiple simulations are executed simultaniously on multiple cores. The simulations on each process are parameterized by the thread index and can thus simulate differents parameters. One has to consider that simulating even one degree of freedom takes quite some time depending on the processor and memory.
+In MeasureStepCount.py, mutiple simulations are executed simultaniously on multiple cores. The simulations on each process are parameterized by the thread index and can thus simulate differents parameters.
 
-The graphs produced by the batch simulations we perfomed can be found in the folder "Desert Ant Behaviour Graphics".
+However: to change the parameters tested, one has to directly change the code in MeasureStepCount.py. Thus, do not run it unless you understood the code. Furthermore, one has to consider that simulating even one degree of freedom takes quite some time depending on the processor and memory.
+
+Instead of runnig simulations on your own, we recommend you to take a look at the graphs produced by us. They are located in the folder "Desert Ant Behaviour Graphics".
 
 ## Notes Regarding Reproducability
 
