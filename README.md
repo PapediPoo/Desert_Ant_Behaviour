@@ -50,7 +50,7 @@ Instead of runnig simulations on your own, we recommend you to take a look at th
 
 ## Notes Regarding Reproducability
 
-The code is written for Python 3.74. We used the following libraries:
+The code is written for Python 3.7.4. We used the following libraries:
 
 - numpy
 - matplotlib
