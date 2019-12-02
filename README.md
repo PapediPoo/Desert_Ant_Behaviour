@@ -6,9 +6,9 @@ This code is part of our project in Agent Based Modelling and Social Simulations
 
 We simulated the food-gathering behaviour of desert ants. Our environment is represented by a two-dimensional plane and contains the nest, (possibly) multiple food-sources and landmarks which are used by the ants for orientation. An ant performs the following actions:
 
-    - The ant starts at the nest (with coordinates (0, 0)) and performs a biased random walk (biased toward the current direction vector) until it stumbles upon food. On its way, it saves for each dicovered landmark the directional vector to the previous landmark (or to the nest for the first landmark). Once the ant has found food, it uses these vectors to walk back to the nest.
-    - Because the walking-back-to-the-nest is also a biased random walk (though with a stronger bias towards the visited landmarks than in food-search behaviour), a probability exists that the ants loses its track. It then switches back to search behaviour until it finds another known landmark.
-    - Once the ant found back to the nest, its journey has ended.
+- The ant starts at the nest (with coordinates (0, 0)) and performs a biased random walk (biased toward the current direction vector) until it stumbles upon food. On its way, it saves for each dicovered landmark the directional vector to the previous landmark (or to the nest for the first landmark). Once the ant has found food, it uses these vectors to walk back to the nest.
+- Because the walking-back-to-the-nest is also a biased random walk (though with a stronger bias towards the visited landmarks than in food-search behaviour), a probability exists that the ants loses its track. It then switches back to search behaviour until it finds another known landmark.
+- Once the ant found back to the nest, its journey has ended.
 
 ## Adjustable Parameters
 
