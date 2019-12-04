@@ -65,3 +65,7 @@ If you do not have Python nor the libraries installed on your system:
 3.  In the command line, navigate to this folder and run
 
         python -m UI.SimulationWindow
+
+## Presentation
+
+The slides for the presentation of this project can be found on https://docs.google.com/presentation/d/1NChTg4doh6Y6H3M8X2u_pNYVYfQpOOHLb-hy2fIMhTs/edit?usp=sharing
