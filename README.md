@@ -2,9 +2,9 @@
 
 ## Overview
 
-This code is part of our project in Agent Based Modelling and Social Simulations. Our paper with detailed explanations can be found in Paper.pdf.
+This code is part of our project in Agent Based Modelling and Social Simulations. Our paper with detailed explanations can be found in Desert_Ant_Behaviour.pdf.
 
-We simulated the food-gathering behaviour of desert ants. Our environment is represented by a two-dimensional plane and contains the nest, (possibly) multiple food-sources and landmarks which are used by the ants for orientation. An ant performs the following actions:
+We simulated the foraging behaviour of desert ants. Our environment is represented by a two-dimensional plane and contains the nest, (possibly) multiple food-sources and landmarks which are used by the ants for orientation. An ant performs the following actions:
 
 - The ant starts at the nest (with coordinates (0, 0)) and performs a biased random walk (biased toward the current direction vector) until it stumbles upon food. For each discovered landmark, the ant remembers the directional vector to the previous landmark (or to the nest for the first landmark). Once the ant has found a food source, it uses these vectors to walk back to the nest.
 - Because the walking-back-to-the-nest is also a biased random walk (though with a stronger bias towards the visited landmarks than in food-search behaviour), a probability exists that the ants loses its track. It then switches back to search behaviour until it finds another known landmark.
@@ -57,8 +57,8 @@ The code is written for Python 3.7.4. We used the following libraries:
 
 If you do not have Python nor the libraries installed on your system:
 
-1.  Install Python 3.7.4 using the executables on https://www.python.org/downloads/release/python-374/.
-2.  Install numyp and matplotlib using the following command:
+1.  Install Python 3.7.4 using the executables on https://www.python.org/downloads/release/python-374/. Ensure that you opt in to install pip and tk during the installation and that the environment variables are created.
+2.  Install numpy and matplotlib using the following command:
 
         pip install numpy matplotlib
 

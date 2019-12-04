@@ -1,5 +1,5 @@
 nest_count = 1
-landmark_count = 0
+landmark_count = 10
 food_count = 5
 
 playround_with = 500

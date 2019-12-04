@@ -67,7 +67,7 @@ if __name__ == '__main__':
     root.columnconfigure(1, weight=1)
 
     # Setup control panel
-    count_scale = tkinter.Scale(control_panel, from_=1, to=250, orient=tkinter.HORIZONTAL, label="Ant count")
+    count_scale = tkinter.Scale(control_panel, from_=1, to=30, orient=tkinter.HORIZONTAL, label="Ant count")
     count_scale.set(1)
     count_scale.pack(side=tkinter.TOP)
 
